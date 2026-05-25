@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Eyes Portal - Space Mission Control Dashboard</title>
+    <meta name="description" content="An interactive Space Mission Control dashboard embedding NASA's Eyes on the Solar System and mission telemetry.">
+    
+    <!-- Google Fonts: Orbitron for futuristic telemetry, Inter for clean copy -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for futuristic UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css?v=cursor-system">
+</head>
+<body>
+    <!-- Sliding Hamburger Menu Drawer -->
+    <div class="hamburger-drawer" id="hamburger-drawer">
+        <div class="drawer-header">
+            <h2><i class="fa-solid fa-bars"></i> MENU DECK</h2>
+            <button class="drawer-close-btn" id="btn-close-drawer" title="Close Menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <div class="drawer-section">
+                <h3 style="font-family: var(--font-telemetry); font-size: 11px; color: var(--color-primary); letter-spacing: 1.5px; margin-bottom: 12px;"><i class="fa-solid fa-layer-group"></i> MISSION TOOLS</h3>
+                <ul class="drawer-links drawer-tabs">
+                    <li><a href="#solar-system" class="drawer-tab active" data-view="solar-system"><i class="fa-solid fa-globe"></i> Solar System View</a></li>
+                    <li><a href="#planetary-positions" class="drawer-tab" data-view="planetary-positions"><i class="fa-solid fa-location-crosshairs"></i> Planetary Positions</a></li>
+                    <li><a href="#telugu-calendar" class="drawer-tab" data-view="telugu-calendar"><i class="fa-solid fa-calendar-days"></i> Telugu Calendar</a></li>
+                </ul>
+            </div>
+
+            <div class="drawer-section">
+                <h3 style="font-family: var(--font-telemetry); font-size: 11px; color: var(--color-primary); letter-spacing: 1.5px; margin-bottom: 12px;"><i class="fa-solid fa-link"></i> EXTERNAL LINKS</h3>
+                <ul class="drawer-links">
+                    <li><a href="https://eyes.nasa.gov/" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> NASA Eyes Official</a></li>
+                    <li><a href="https://www.jpl.nasa.gov/" target="_blank"><i class="fa-solid fa-satellite"></i> JPL Missions</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+    <!-- Starry Parallax Background -->
+    <div class="stars-container" id="stars-container">
+        <canvas id="starfield-canvas"></canvas>
+        <div class="nebula-overlay"></div>
+    </div>
+
+    <!-- Scanline effect for CRT/Monitor feel -->
+    <div class="scanlines"></div>
+
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard-wrapper">
+        <!-- Top Telemetry Header -->
+        <header class="dashboard-header" id="main-header">
+            <div class="header-left">
+                <button id="btn-hamburger-menu" class="hamburger-btn" title="Open Main Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="logo-orb"></div>
+                <div class="title-group">
+                    <h1>MISSION CONTROL DECK</h1>
+                    <p class="subtitle">DEEP SPACE TELEMETRY PORTAL</p>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="status-indicator">
+                    <span class="pulse-dot green" id="system-status-dot"></span>
+                    <span class="status-text" id="system-status-text">SYSTEM STATUS: NOMINAL</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="time-coordinates">
+                    <div class="coord-item">
+                        <span class="coord-label">LOC:</span>
+                        <span class="coord-val" id="telemetry-location">0.0000° N, 0.0000° E</span>
+                    </div>
+                    <div class="coord-item">
+                        <span class="coord-label">UTC TIME:</span>
+                        <span class="coord-val" id="telemetry-utc">2026-05-25 10:15:35</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace: Full-screen Viewport Iframe -->
+        <main class="dashboard-body">
+            <!-- Center Panel: The Iframe Viewport -->
+            <section class="panel-center" id="viewport-panel" aria-label="Visualizer Viewport" style="width: 100%; height: 100%;">
+                <div class="viewport-header">
+                    <div class="viewport-title">
+                        <i class="fa-solid fa-globe"></i> ACTIVE VIEWPORT: <span id="current-viewport-name">Solar System</span>
+                    </div>
+                    <div class="viewport-controls">
+                        <button class="viewport-btn" id="btn-refresh" title="Reload Viewport">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </button>
+                        <button class="viewport-btn" id="btn-fullscreen" title="Toggle Fullscreen">
+                            <i class="fa-solid fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="iframe-container" id="iframe-container">
+                    <!-- NASA Eyes embedded here -->
+                    <iframe 
+                        id="nasa-eyes-iframe" 
+                        src="https://eyes.nasa.gov/apps/solar-system/#/home?embed=true" 
+                        allow="fullscreen; autoplay; vr"
+                        allowfullscreen>
+                    </iframe>
+                    <div class="planetary-panel hidden" id="planetary-panel" aria-label="Planetary Positions">
+                        <div class="planetary-panel-header">
+                            <div>
+                                <p class="planetary-kicker">HELIOSPHERIC TRACKING</p>
+                                <h2>Planetary Positions</h2>
+                            </div>
+                            <span class="planetary-timestamp" id="planetary-timestamp">SYNC PENDING</span>
+                        </div>
+                        <div class="planetary-grid" id="planetary-grid"></div>
+                    </div>
+                    <div class="telugu-calendar-panel hidden" id="telugu-calendar-panel" aria-label="Telugu Calendar">
+                        <div class="telugu-panel-header">
+                            <div>
+                                <p class="planetary-kicker">PANCHANGAM SYNC</p>
+                                <h2>Telugu Calendar</h2>
+                            </div>
+                            <div class="telugu-date-control">
+                                <input type="datetime-local" id="telugu-date-input" aria-label="Telugu calendar date and time">
+                                <button class="viewport-btn" id="btn-telugu-today" type="button">TODAY</button>
+                            </div>
+                        </div>
+                        <div class="telugu-summary">
+                            <div class="telugu-primary-card">
+                                <span class="telugu-label">TELUGU DATE</span>
+                                <strong id="telugu-date-title">SYNC PENDING</strong>
+                                <p id="telugu-date-subtitle">Hyderabad / IST</p>
+                            </div>
+                            <div class="telugu-primary-card">
+                                <span class="telugu-label">TITHI</span>
+                                <strong id="telugu-tithi-title">SYNC PENDING</strong>
+                                <p id="telugu-tithi-end">Ends: --</p>
+                            </div>
+                        </div>
+                        <div class="telugu-grid" id="telugu-grid"></div>
+                    </div>
+                    <!-- Sleek custom overlay loading state -->
+                    <div class="iframe-loader" id="iframe-loader">
+                        <div class="loader-spinner"></div>
+                        <div class="loader-text">ESTABLISHING LINK TO NASA DATA CENTER...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer: Control deck for Sound/Info/Credit -->
+        <footer class="dashboard-footer" id="main-footer">
+            <div class="footer-left">
+                <span class="security-level">ACCESS LEVEL: UNRESTRICTED</span>
+            </div>
+            <div class="footer-center">
+                <!-- Sound Toggles -->
+                <div class="footer-control-group">
+                    <button class="footer-control-btn" id="btn-ambient-audio">
+                        <i class="fa-solid fa-volume-xmark" id="audio-icon"></i> AMBIENT HUM
+                    </button>
+                    <button class="footer-control-btn" id="btn-sound-effects">
+                        <i class="fa-solid fa-volume-high"></i> SFX: ON
+                    </button>
+                </div>
+            </div>
+            <div class="footer-right">
+                <span class="nasa-attribution">Powered by NASA Jet Propulsion Laboratory</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
