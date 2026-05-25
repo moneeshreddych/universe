@@ -136,11 +136,46 @@
                                 <button class="viewport-btn" id="btn-telugu-today" type="button">TODAY</button>
                             </div>
                         </div>
+                        
+                        <!-- Global Location & Geolocation Control -->
+                        <div class="telugu-location-deck">
+                            <div class="location-search-row">
+                                <div class="search-input-wrapper">
+                                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                    <input type="text" id="location-search-input" placeholder="Search global city (e.g. Hyderabad, London, Dallas)..." autocomplete="off" aria-label="Search city name">
+                                    <button class="clear-btn hidden" id="btn-clear-search" type="button" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
+                                    <div class="autocomplete-dropdown-panel hidden" id="location-autocomplete-list"></div>
+                                </div>
+                                <button class="viewport-btn gps-btn" id="btn-gps-location" type="button" title="Use current GPS coordinates">
+                                    <i class="fa-solid fa-location-crosshairs"></i> GPS
+                                </button>
+                            </div>
+                            <div class="location-badges-row">
+                                <div class="badge-group">
+                                    <span class="badge-title"><i class="fa-solid fa-clock-rotate-left"></i> RECENTS:</span>
+                                    <div class="badge-list" id="recents-list">
+                                        <span class="no-badges">None</span>
+                                    </div>
+                                </div>
+                                <div class="badge-group">
+                                    <span class="badge-title"><i class="fa-solid fa-star"></i> FAVORITES:</span>
+                                    <div class="badge-list" id="favorites-list">
+                                        <span class="no-badges">None</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="telugu-summary">
                             <div class="telugu-primary-card">
                                 <span class="telugu-label">TELUGU DATE</span>
                                 <strong id="telugu-date-title">SYNC PENDING</strong>
-                                <p id="telugu-date-subtitle">Hyderabad / IST</p>
+                                <div class="location-subtitle-wrapper">
+                                    <p id="telugu-date-subtitle">Hyderabad / IST</p>
+                                    <button class="favorite-toggle-btn" id="btn-toggle-favorite" type="button" title="Toggle Favorite">
+                                        <i class="fa-regular fa-star" id="favorite-star-icon"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="telugu-primary-card">
                                 <span class="telugu-label">TITHI</span>

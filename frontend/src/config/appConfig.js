@@ -1,5 +1,6 @@
 export const APP_CONFIG = {
   appName: 'NASA Mission Control Dashboard',
+  apiUrl: 'http://localhost:3000/api',
   defaultView: 'solar-system',
   nasaEyesUrl: 'https://eyes.nasa.gov/apps/solar-system/#/home?embed=true',
   externalLinks: {
