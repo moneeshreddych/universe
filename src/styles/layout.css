@@ -1,0 +1,152 @@
+.dashboard-wrapper {
+  display: grid;
+  grid-template-rows: 70px 1fr 40px;
+  height: 100vh;
+  position: relative;
+  width: 100vw;
+  z-index: 1;
+}
+
+.dashboard-header,
+.dashboard-footer {
+  align-items: center;
+  backdrop-filter: blur(8px);
+  background: rgba(6, 8, 16, 0.8);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+}
+
+.dashboard-header {
+  border-bottom: 1px solid var(--color-panel-border);
+}
+
+.dashboard-footer {
+  border-top: 1px solid var(--color-panel-border);
+}
+
+.dashboard-body {
+  height: 100%;
+  overflow: hidden;
+  padding: 15px;
+  width: 100%;
+}
+
+.header-left,
+.status-indicator,
+.viewport-title,
+.viewport-controls,
+.footer-control-group,
+.drawer-header,
+.drawer-header h2,
+.drawer-links a,
+.telugu-date-control {
+  align-items: center;
+  display: flex;
+}
+
+.header-left {
+  gap: 15px;
+}
+
+.header-center,
+.footer-center {
+  display: flex;
+  justify-content: center;
+}
+
+.header-right .time-coordinates {
+  display: flex;
+  font-family: var(--font-telemetry);
+  font-size: 11px;
+  gap: 20px;
+}
+
+.coord-item {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-center {
+  backdrop-filter: blur(12px) saturate(180%);
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.viewport-header {
+  align-items: center;
+  background: rgba(0, 242, 254, 0.05);
+  border-bottom: 1px solid var(--color-panel-border);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  z-index: 2;
+}
+
+.iframe-container {
+  background: #000;
+  flex: 1;
+  position: relative;
+}
+
+#nasa-eyes-iframe {
+  border: none;
+  display: block;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--transition-slow) ease-in-out;
+  width: 100%;
+}
+
+#nasa-eyes-iframe.loaded {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  body {
+    overflow: auto;
+  }
+
+  .dashboard-wrapper {
+    grid-template-rows: auto 1fr auto;
+    height: auto;
+    overflow: auto;
+  }
+
+  .dashboard-body {
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .panel-center {
+    height: 480px;
+  }
+
+  .telugu-panel-header,
+  .planetary-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .telugu-date-control,
+  .telugu-summary {
+    width: 100%;
+  }
+
+  .telugu-summary {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,11 @@
+[
+  { "name": "Mercury", "period": 87.969, "distance": "0.39 AU", "signal": "INNER TRACK" },
+  { "name": "Venus", "period": 224.701, "distance": "0.72 AU", "signal": "INNER TRACK" },
+  { "name": "Earth", "period": 365.256, "distance": "1.00 AU", "signal": "REFERENCE" },
+  { "name": "Moon", "period": 27.321, "distance": "384,400 KM", "signal": "LUNAR TRACK" },
+  { "name": "Mars", "period": 686.98, "distance": "1.52 AU", "signal": "TRANSFER ARC" },
+  { "name": "Jupiter", "period": 4332.59, "distance": "5.20 AU", "signal": "OUTER TRACK" },
+  { "name": "Saturn", "period": 10759.22, "distance": "9.58 AU", "signal": "OUTER TRACK" },
+  { "name": "Uranus", "period": 30688.5, "distance": "19.2 AU", "signal": "DEEP TRACK" },
+  { "name": "Neptune", "period": 60182, "distance": "30.1 AU", "signal": "DEEP TRACK" }
+]

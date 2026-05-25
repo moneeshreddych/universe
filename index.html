@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NASA Eyes Portal - Space Mission Control Dashboard</title>
     <meta name="description" content="An interactive Space Mission Control dashboard embedding NASA's Eyes on the Solar System and mission telemetry.">
+    <link rel="icon" href="public/favicon.ico">
     
     <!-- Google Fonts: Orbitron for futuristic telemetry, Inter for clean copy -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +15,7 @@
     <!-- FontAwesome for futuristic UI icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="styles.css?v=cursor-system">
+    <link rel="stylesheet" href="styles.css?v=modular">
 </head>
 <body>
     <!-- Sliding Hamburger Menu Drawer -->
@@ -27,7 +28,7 @@
         </div>
         <div class="drawer-content">
             <div class="drawer-section">
-                <h3 style="font-family: var(--font-telemetry); font-size: 11px; color: var(--color-primary); letter-spacing: 1.5px; margin-bottom: 12px;"><i class="fa-solid fa-layer-group"></i> MISSION TOOLS</h3>
+                <h3 class="drawer-section-title"><i class="fa-solid fa-layer-group"></i> MISSION TOOLS</h3>
                 <ul class="drawer-links drawer-tabs">
                     <li><a href="#solar-system" class="drawer-tab active" data-view="solar-system"><i class="fa-solid fa-globe"></i> Solar System View</a></li>
                     <li><a href="#planetary-positions" class="drawer-tab" data-view="planetary-positions"><i class="fa-solid fa-location-crosshairs"></i> Planetary Positions</a></li>
@@ -36,7 +37,7 @@
             </div>
 
             <div class="drawer-section">
-                <h3 style="font-family: var(--font-telemetry); font-size: 11px; color: var(--color-primary); letter-spacing: 1.5px; margin-bottom: 12px;"><i class="fa-solid fa-link"></i> EXTERNAL LINKS</h3>
+                <h3 class="drawer-section-title"><i class="fa-solid fa-link"></i> EXTERNAL LINKS</h3>
                 <ul class="drawer-links">
                     <li><a href="https://eyes.nasa.gov/" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> NASA Eyes Official</a></li>
                     <li><a href="https://www.jpl.nasa.gov/" target="_blank"><i class="fa-solid fa-satellite"></i> JPL Missions</a></li>
@@ -181,6 +182,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>

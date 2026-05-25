@@ -1,0 +1,26 @@
+:root {
+  --color-bg: #030308;
+  --color-panel-bg: rgba(8, 10, 20, 0.65);
+  --color-panel-border: rgba(0, 242, 254, 0.15);
+  --color-panel-border-active: rgba(0, 242, 254, 0.6);
+  --color-primary: #00f2fe;
+  --color-secondary: #4facfe;
+  --color-accent: #ff4e50;
+  --color-accent-green: #00ff87;
+  --color-accent-amber: #f9d423;
+  --color-text-bright: #e2e8f0;
+  --color-text-muted: #708090;
+  --color-text-dim: #475569;
+  --font-telemetry: 'Orbitron', 'Courier New', monospace;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --cursor-default: default;
+  --cursor-pointer: pointer;
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --glow-cyan: 0 0 10px rgba(0, 242, 254, 0.3), 0 0 20px rgba(0, 242, 254, 0.1);
+  --glow-cyan-strong: 0 0 15px rgba(0, 242, 254, 0.6), 0 0 30px rgba(0, 242, 254, 0.3);
+  --glow-green: 0 0 10px rgba(0, 255, 135, 0.4);
+  --glow-red: 0 0 12px rgba(255, 78, 80, 0.5);
+  --glow-amber: 0 0 10px rgba(249, 212, 35, 0.4);
+}
