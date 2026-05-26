@@ -147,6 +147,24 @@ export async function getPanchangam(req, res, next) {
       yamagandam: m.yamagandam,
       abhijitMuhurtham: m.abhijit,
       abhijit: m.abhijit,
+      durmuhurthams: data.durmuhurthams.map(dm => ({
+        start: dm.start.toISOString(),
+        end: dm.end.toISOString(),
+        display: dm.display
+      })),
+      durmuhurtham: data.durmuhurthams.map(dm => dm.display).join(', '),
+      varjyam: {
+        start: data.varjyam.start.toISOString(),
+        end: data.varjyam.end.toISOString(),
+        display: `${formatLocalTime(data.varjyam.start, timezone)} - ${formatLocalTime(data.varjyam.end, timezone)}`
+      },
+      amritakalam: {
+        start: data.amritakalam.start.toISOString(),
+        end: data.amritakalam.end.toISOString(),
+        display: `${formatLocalTime(data.amritakalam.start, timezone)} - ${formatLocalTime(data.amritakalam.end, timezone)}`
+      },
+      moonPhase: data.moonPhase,
+      sankranti: data.sankranti,
       locationLabel: `${locationName} (${timezone})`
     });
   } catch (error) {

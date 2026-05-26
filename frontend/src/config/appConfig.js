@@ -1,37 +1,18 @@
 export const APP_CONFIG = {
-  appName: 'NASA Mission Control Dashboard',
+  appName: 'Telugu Panchangam Calendar',
   apiUrl: 'http://localhost:3000/api',
-  defaultView: 'solar-system',
-  nasaEyesUrl: 'https://eyes.nasa.gov/apps/solar-system/#/home?embed=true',
-  externalLinks: {
-    nasaEyes: 'https://eyes.nasa.gov/',
-    jpl: 'https://www.jpl.nasa.gov/'
-  },
-  telemetry: {
-    baseLatitude: 34.2012,
-    baseLongitude: -118.1714,
-    jitter: 0.0002,
-    refreshMs: 1000
-  },
+  defaultView: 'month', // default view matches Google Calendar month view
   starfield: {
-    count: 100,
-    minSpeed: 0.02,
-    maxSpeed: 0.1
+    count: 120,
+    minSpeed: 0.01,
+    maxSpeed: 0.05
   },
-  teluguCalendar: {
-    locationLabel: 'Hyderabad IST',
-    timeZone: 'Asia/Kolkata'
-  },
-  dataPaths: {
-    planets: './src/data/planets.json',
-    nakshatras: './src/data/nakshatras.json',
-    samvatsarams: './src/data/samvatsarams.json',
-    tithis: './src/data/tithis.json'
+  defaultLocation: {
+    name: 'Hyderabad',
+    state: 'Telangana',
+    country: 'India',
+    latitude: 17.3850,
+    longitude: 78.4867,
+    timezone: 'Asia/Kolkata'
   }
-};
-
-export const VIEW_IDS = {
-  solarSystem: 'solar-system',
-  planetaryPositions: 'planetary-positions',
-  teluguCalendar: 'telugu-calendar'
 };

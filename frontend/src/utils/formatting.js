@@ -6,7 +6,7 @@ export function formatUtcTimestamp(date = new Date()) {
 
 export function formatIst(date) {
   return date.toLocaleString('en-IN', {
-    timeZone: APP_CONFIG.teluguCalendar.timeZone,
+    timeZone: APP_CONFIG.defaultLocation?.timezone || 'Asia/Kolkata',
     day: '2-digit',
     month: 'short',
     year: 'numeric',

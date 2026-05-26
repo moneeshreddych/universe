@@ -12,6 +12,16 @@ import {
 import { formatLocalTime, localTimeToUtc, formatLocalDate } from '../utils/dateUtils.js';
 import * as Astronomy from 'astronomy-engine';
 
+const SANKRANTI_NAMES = [
+  "Mesha Sankranti", "Vrishabha Sankranti", "Mithuna Sankranti", "Karkataka Sankranti",
+  "Simha Sankranti", "Kanya Sankranti", "Tula Sankranti", "Vrischika Sankranti",
+  "Dhanusu Sankranti", "Makara Sankranti", "Kumbha Sankranti", "Meena Sankranti"
+];
+
+const VARJYAM_OFFSETS = [
+  50, 24, 30, 40, 14, 11, 30, 20, 32, 30, 20, 18, 21, 20, 14, 14, 10, 14, 56, 24, 20, 10, 10, 18, 16, 24, 30
+];
+
 // Helper: Calculate Moon/Sun separation (lunar phase)
 function getLunarPhase(date) {
   const sunLong = getSunLongitude(date);
@@ -76,6 +86,32 @@ export function findTithiEnd(date, phaseNow) {
   return high;
 }
 
+// Helper: Find Nakshatra start time (bisection search)
+export function findNakshatraStart(date, currentLong) {
+  const currentIndex = Math.floor(currentLong / 13.333333);
+  const targetLong = currentIndex * 13.333333;
+
+  let low = new Date(date.getTime() - 36 * 60 * 60 * 1000);
+  let high = new Date(date);
+
+  for (let i = 0; i < 36; i += 1) {
+    const mid = new Date((low.getTime() + high.getTime()) / 2);
+    const midLong = getMoonSiderealLongitude(mid);
+
+    let diff = midLong - targetLong;
+    if (diff < -180) diff += 360;
+    if (diff > 180) diff -= 360;
+
+    if (diff < 0) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  return high;
+}
+
 // Helper: Find Nakshatra end time (bisection search)
 export function findNakshatraEnd(date, currentLong) {
   const currentIndex = Math.floor(currentLong / 13.333333);
@@ -102,6 +138,30 @@ export function findNakshatraEnd(date, currentLong) {
   return high;
 }
 
+// Helper: Get Varjyam and Amrita Kalam intervals
+export function getVarjyamAndAmritaKalam(evalTime, moonSidereal) {
+  const nakshatraIndex = Math.floor(moonSidereal / (360 / 27));
+  const startUtc = findNakshatraStart(evalTime, moonSidereal);
+  const endUtc = findNakshatraEnd(evalTime, moonSidereal);
+  const duration = endUtc.getTime() - startUtc.getTime();
+
+  const ghatiOffset = VARJYAM_OFFSETS[nakshatraIndex];
+
+  // Varjyam lasts 4 ghatis (1/15th of Nakshatra length)
+  const varjyamStart = new Date(startUtc.getTime() + (ghatiOffset / 60) * duration);
+  const varjyamEnd = new Date(varjyamStart.getTime() + (4 / 60) * duration);
+
+  // Amrita Kalam starts 42 ghatis after Varjyam start (modular 60 ghatis)
+  const amritaGhatiOffset = (ghatiOffset + 42) % 60;
+  const amritaStart = new Date(startUtc.getTime() + (amritaGhatiOffset / 60) * duration);
+  const amritaEnd = new Date(amritaStart.getTime() + (4 / 60) * duration);
+
+  return {
+    varjyam: { start: varjyamStart, end: varjyamEnd },
+    amritakalam: { start: amritaStart, end: amritaEnd }
+  };
+}
+
 // Helper: Get Telugu lunar month name
 export function getTeluguMasam(newMoonDate) {
   const sunLong = getSunLongitude(newMoonDate);
@@ -112,7 +172,6 @@ export function getTeluguMasam(newMoonDate) {
 
 // Helper: Find Ugadi date to determine Samvatsara year transitions
 export function getUgadiDate(year) {
-  // Probe starting late March (UTC 6:00 AM)
   let probe = new Date(Date.UTC(year, 2, 31, 6));
 
   for (let i = 0; i < 45; i += 1) {
@@ -124,7 +183,6 @@ export function getUgadiDate(year) {
     probe = new Date(probe.getTime() + 86400000);
   }
 
-  // Fallback
   return new Date(Date.UTC(year, 2, 22, 0));
 }
 
@@ -146,13 +204,114 @@ function getKaranaName(k) {
   return KARANA_REPEATING[(k - 1) % 7];
 }
 
+// Helper: Get Moon Phase Details
+function getMoonPhaseDetails(elongation) {
+  const fraction = (1 - Math.cos(elongation * Math.PI / 180)) / 2;
+  let name = "";
+  if (elongation === 0 || elongation === 360) {
+    name = "New Moon";
+  } else if (elongation > 0 && elongation < 90) {
+    name = "Waxing Crescent";
+  } else if (elongation === 90) {
+    name = "First Quarter";
+  } else if (elongation > 90 && elongation < 180) {
+    name = "Waxing Gibbous";
+  } else if (elongation === 180) {
+    name = "Full Moon";
+  } else if (elongation > 180 && elongation < 270) {
+    name = "Waning Gibbous";
+  } else if (elongation === 270) {
+    name = "Third Quarter";
+  } else if (elongation > 270 && elongation < 360) {
+    name = "Waning Crescent";
+  }
+  return {
+    fraction: parseFloat((fraction * 100).toFixed(1)),
+    name,
+    isWaxing: elongation < 180
+  };
+}
+
+// Helper: Find Sun transit (Sankranti) using bisection
+export function findSunTransit(startUtc, endUtc, startRasi) {
+  let low = new Date(startUtc);
+  let high = new Date(endUtc);
+
+  for (let i = 0; i < 30; i += 1) {
+    const mid = new Date((low.getTime() + high.getTime()) / 2);
+    const sunLong = getSunLongitude(mid);
+    const sunSidereal = getSiderealLongitude(sunLong, mid);
+    const midRasi = Math.floor(sunSidereal / 30);
+
+    if (midRasi === startRasi) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  return high;
+}
+
+// Helper: Calculate Durmuhurthams
+export function calculateDurmuhurthams(sunrise, sunset, weekdayIndex, timezone) {
+  if (!sunrise || !sunset) return [];
+
+  const riseMs = sunrise.getTime();
+  const setMs = sunset.getTime();
+  const dayLength = setMs - riseMs;
+  const partLength = dayLength / 15;
+
+  const getWindow = (partIndex) => {
+    const start = new Date(riseMs + (partIndex - 1) * partLength);
+    const end = new Date(riseMs + partIndex * partLength);
+    return {
+      start,
+      end,
+      display: `${formatLocalTime(start, timezone)} - ${formatLocalTime(end, timezone)}`
+    };
+  };
+
+  const durmuhurthams = [];
+
+  switch (weekdayIndex) {
+    case 0: // Sunday
+      durmuhurthams.push(getWindow(14));
+      break;
+    case 1: // Monday
+      durmuhurthams.push(getWindow(9));
+      durmuhurthams.push(getWindow(12));
+      break;
+    case 2: // Tuesday
+      durmuhurthams.push(getWindow(3));
+      durmuhurthams.push(getWindow(7));
+      break;
+    case 3: // Wednesday
+      durmuhurthams.push(getWindow(8));
+      break;
+    case 4: // Thursday
+      durmuhurthams.push(getWindow(6));
+      break;
+    case 5: // Friday
+      durmuhurthams.push(getWindow(4));
+      durmuhurthams.push(getWindow(9));
+      break;
+    case 6: // Saturday
+      durmuhurthams.push(getWindow(1));
+      durmuhurthams.push(getWindow(2));
+      break;
+  }
+
+  return durmuhurthams;
+}
+
 /**
  * Calculates the complete Panchangam elements for a local calendar day.
  */
 export function getPanchangamData(date, timezone, lat, lon, alt = 0) {
   // Determine sunrise and sunset for evaluating elements
   const { sunrise, sunset } = getSunriseSunset(date, timezone, lat, lon, alt);
-  
+
   // Astrologically, the day's attributes are evaluated at sunrise.
   // Fallback to 06:00 local time if sunrise is not available.
   const evalTime = sunrise || localTimeToUtc(formatLocalDate(date, timezone), '06:00', timezone);
@@ -184,6 +343,32 @@ export function getPanchangamData(date, timezone, lat, lon, alt = 0) {
   const samvatsaram = getSamvatsaram(evalTime);
   const vaaram = WEEKDAY_NAMES[evalTime.getDay()];
 
+  // Calculate new astrological elements
+  const durmuhurthams = calculateDurmuhurthams(sunrise, sunset, evalTime.getDay(), timezone);
+  const { varjyam, amritakalam } = getVarjyamAndAmritaKalam(evalTime, moonSidereal);
+  const moonPhase = getMoonPhaseDetails(phase);
+
+  // Sankranti check (over active calendar day, sunrise to sunrise next day)
+  const nextDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+  const nextSunriseSunset = getSunriseSunset(nextDay, timezone, lat, lon, alt);
+  const nextSunrise = nextSunriseSunset.sunrise || new Date(evalTime.getTime() + 24 * 60 * 60 * 1000);
+
+  const sunLongNext = getSunLongitude(nextSunrise);
+  const sunSiderealNext = getSiderealLongitude(sunLongNext, nextSunrise);
+  const rasiStart = Math.floor(sunSidereal / 30);
+  const rasiEnd = Math.floor(sunSiderealNext / 30);
+
+  let sankranti = null;
+  if (rasiStart !== rasiEnd) {
+    const transitTime = findSunTransit(evalTime, nextSunrise, rasiStart);
+    const targetRasi = rasiEnd;
+    sankranti = {
+      name: `${SANKRANTI_NAMES[targetRasi]}`,
+      time: formatLocalTime(transitTime, timezone),
+      date: formatLocalDate(transitTime, timezone)
+    };
+  }
+
   return {
     date: formatLocalDate(date, timezone),
     masam,
@@ -196,7 +381,12 @@ export function getPanchangamData(date, timezone, lat, lon, alt = 0) {
     samvatsaram,
     evalTime,
     sunrise,
-    sunset
+    sunset,
+    durmuhurthams,
+    varjyam,
+    amritakalam,
+    moonPhase,
+    sankranti
   };
 }
 
@@ -232,7 +422,6 @@ export function getMuhurthams(sunrise, sunset, weekdayIndex, timezone) {
   const yamaPart = YAMAGANDAM_PARTS[weekdayIndex];
   const gulikaPart = GULIKA_KALAM_PARTS[weekdayIndex];
 
-  // Abhijit Muhurtham is the 8th of 15 equal parts of the day
   const mLength = dayLength / 15;
   const abhijitStart = new Date(riseMs + 7 * mLength);
   const abhijitEnd = new Date(riseMs + 8 * mLength);

@@ -3,219 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Eyes Portal - Space Mission Control Dashboard</title>
-    <meta name="description" content="An interactive Space Mission Control dashboard embedding NASA's Eyes on the Solar System and mission telemetry.">
+    <title>Telugu Panchangam Calendar - Traditional Astro Calendar</title>
+    <meta name="description" content="A production-grade Telugu Panchangam Calendar Web App resembling Google Calendar, calculating Tithis, Nakshatrams, Muhurthams, and Graha positions dynamically.">
     <link rel="icon" href="public/favicon.ico">
     
-    <!-- Google Fonts: Orbitron for futuristic telemetry, Inter for clean copy -->
+    <!-- Google Fonts: Orbitron for cosmic text, Inter for clean layout -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome for futuristic UI icons -->
+    <!-- FontAwesome for UI icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="styles.css?v=modular">
 </head>
 <body>
-    <!-- Sliding Hamburger Menu Drawer -->
-    <div class="hamburger-drawer" id="hamburger-drawer">
-        <div class="drawer-header">
-            <h2><i class="fa-solid fa-bars"></i> MENU DECK</h2>
-            <button class="drawer-close-btn" id="btn-close-drawer" title="Close Menu">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        <div class="drawer-content">
-            <div class="drawer-section">
-                <h3 class="drawer-section-title"><i class="fa-solid fa-layer-group"></i> MISSION TOOLS</h3>
-                <ul class="drawer-links drawer-tabs">
-                    <li><a href="#solar-system" class="drawer-tab active" data-view="solar-system"><i class="fa-solid fa-globe"></i> Solar System View</a></li>
-                    <li><a href="#planetary-positions" class="drawer-tab" data-view="planetary-positions"><i class="fa-solid fa-location-crosshairs"></i> Planetary Positions</a></li>
-                    <li><a href="#telugu-calendar" class="drawer-tab" data-view="telugu-calendar"><i class="fa-solid fa-calendar-days"></i> Telugu Calendar</a></li>
-                </ul>
-            </div>
-
-            <div class="drawer-section">
-                <h3 class="drawer-section-title"><i class="fa-solid fa-link"></i> EXTERNAL LINKS</h3>
-                <ul class="drawer-links">
-                    <li><a href="https://eyes.nasa.gov/" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> NASA Eyes Official</a></li>
-                    <li><a href="https://www.jpl.nasa.gov/" target="_blank"><i class="fa-solid fa-satellite"></i> JPL Missions</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="drawer-backdrop" id="drawer-backdrop"></div>
-
-    <!-- Starry Parallax Background -->
+    <!-- Starry Canvas Background (shown in Cosmic theme) -->
     <div class="stars-container" id="stars-container">
         <canvas id="starfield-canvas"></canvas>
         <div class="nebula-overlay"></div>
     </div>
 
-    <!-- Scanline effect for CRT/Monitor feel -->
-    <div class="scanlines"></div>
+    <!-- Scanline effect for Cosmic Monitor theme -->
+    <div class="scanlines" id="scanlines-overlay"></div>
 
-    <!-- Main Dashboard Layout -->
+    <!-- Main Google Calendar-style Grid -->
     <div class="dashboard-wrapper">
-        <!-- Top Telemetry Header -->
-        <header class="dashboard-header" id="main-header">
-            <div class="header-left">
-                <button id="btn-hamburger-menu" class="hamburger-btn" title="Open Main Menu">
+        <!-- Top Google-Style Header -->
+        <header class="dashboard-header">
+            <div class="header-left flex-align-center">
+                <button id="btn-sidebar-toggle" class="sidebar-toggle-btn" title="Toggle Sidebar">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="logo-orb"></div>
+                <div class="logo-circle"><i class="fa-solid fa-sun-plant-wilt"></i></div>
                 <div class="title-group">
-                    <h1>MISSION CONTROL DECK</h1>
-                    <p class="subtitle">DEEP SPACE TELEMETRY PORTAL</p>
+                    <h1>తెలుగు పంచాంగం</h1>
+                    <p class="subtitle">TELUGU PANCHANGAM</p>
                 </div>
             </div>
-            <div class="header-center">
-                <div class="status-indicator">
-                    <span class="pulse-dot green" id="system-status-dot"></span>
-                    <span class="status-text" id="system-status-text">SYSTEM STATUS: NOMINAL</span>
+            
+            <!-- Center: Search Location with Autocomplete -->
+            <div class="header-center flex-align-center">
+                <div class="location-search-bar">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="location-search-input" placeholder="Search global city (e.g. Hyderabad, London, Dallas)..." autocomplete="off" aria-label="Search city name">
+                    <button class="clear-btn hidden" id="btn-clear-search" type="button" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="gps-btn" id="btn-gps-location" type="button" title="Use current GPS coordinates">
+                        <i class="fa-solid fa-location-crosshairs"></i> GPS
+                    </button>
+                    <div class="autocomplete-dropdown-panel hidden" id="location-autocomplete-list"></div>
                 </div>
             </div>
-            <div class="header-right">
-                <div class="time-coordinates">
-                    <div class="coord-item">
-                        <span class="coord-label">LOC:</span>
-                        <span class="coord-val" id="telemetry-location">0.0000° N, 0.0000° E</span>
-                    </div>
-                    <div class="coord-item">
-                        <span class="coord-label">UTC TIME:</span>
-                        <span class="coord-val" id="telemetry-utc">2026-05-25 10:15:35</span>
-                    </div>
+
+            <!-- Right: View Selector, Themes & Audio Control -->
+            <div class="header-right flex-align-center">
+                <!-- Today & Navigation -->
+                <div class="calendar-nav-controls flex-align-center">
+                    <button id="btn-today" class="nav-btn today-btn">Today</button>
+                    <button id="btn-prev" class="nav-btn icon-btn" title="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button id="btn-next" class="nav-btn icon-btn" title="Next"><i class="fa-solid fa-chevron-right"></i></button>
+                    <span id="label-current-range" class="current-range-label">Syncing...</span>
                 </div>
+
+                <!-- View Switcher -->
+                <div class="view-selector-wrapper">
+                    <select id="select-view" class="view-dropdown" aria-label="Select calendar view">
+                        <option value="month">Month</option>
+                        <option value="week">Week</option>
+                        <option value="day">Day</option>
+                    </select>
+                </div>
+
+                <!-- Audio control buttons -->
+                <div class="audio-control-group flex-align-center">
+                    <button class="header-icon-btn" id="btn-ambient-audio" title="Ambient Sound Toggle">
+                        <i class="fa-solid fa-volume-xmark" id="audio-icon"></i>
+                    </button>
+                    <button class="header-icon-btn" id="btn-sound-effects" title="SFX Toggle">
+                        <i class="fa-solid fa-volume-high" id="sfx-icon"></i>
+                    </button>
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="btn-theme-toggle" class="header-icon-btn theme-toggle-btn" title="Switch Theme (Light / Dark / Cosmic)">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
             </div>
         </header>
 
-        <!-- Main Workspace: Full-screen Viewport Iframe -->
+        <!-- Body content: Split into sidebar and central views -->
         <main class="dashboard-body">
-            <!-- Center Panel: The Iframe Viewport -->
-            <section class="panel-center" id="viewport-panel" aria-label="Visualizer Viewport" style="width: 100%; height: 100%;">
-                <div class="viewport-header">
-                    <div class="viewport-title">
-                        <i class="fa-solid fa-globe"></i> ACTIVE VIEWPORT: <span id="current-viewport-name">Solar System</span>
+            <!-- Left Sidebar -->
+            <aside class="calendar-sidebar" id="calendar-sidebar" aria-label="Sidebar Calendar Controls">
+                <!-- Sidebar Mini Calendar Container -->
+                <div class="sidebar-section mini-calendar-section">
+                    <div id="mini-calendar" class="mini-calendar-wrapper">
+                        <!-- Rendered by JS -->
                     </div>
-                    <div class="viewport-controls">
-                        <button class="viewport-btn" id="btn-refresh" title="Reload Viewport">
-                            <i class="fa-solid fa-arrows-rotate"></i>
-                        </button>
-                        <button class="viewport-btn" id="btn-fullscreen" title="Toggle Fullscreen">
-                            <i class="fa-solid fa-expand"></i>
+                </div>
+
+                <!-- Active Location display & Favorites Toggle -->
+                <div class="sidebar-section location-info-section">
+                    <h3 class="section-title"><i class="fa-solid fa-map-location-dot"></i> Selected Location</h3>
+                    <div class="active-location-card">
+                        <div class="location-details">
+                            <strong id="active-location-name">Hyderabad</strong>
+                            <span id="active-location-tz">Asia/Kolkata</span>
+                        </div>
+                        <button class="favorite-toggle-btn" id="btn-toggle-favorite" title="Add to Favorites">
+                            <i class="fa-regular fa-star" id="favorite-star-icon"></i>
                         </button>
                     </div>
                 </div>
-                <div class="iframe-container" id="iframe-container">
-                    <!-- NASA Eyes embedded here -->
-                    <iframe 
-                        id="nasa-eyes-iframe" 
-                        src="https://eyes.nasa.gov/apps/solar-system/#/home?embed=true" 
-                        allow="fullscreen; autoplay; vr"
-                        allowfullscreen>
-                    </iframe>
-                    <div class="planetary-panel hidden" id="planetary-panel" aria-label="Planetary Positions">
-                        <div class="planetary-panel-header">
-                            <div>
-                                <p class="planetary-kicker">HELIOSPHERIC TRACKING</p>
-                                <h2>Planetary Positions</h2>
-                            </div>
-                            <span class="planetary-timestamp" id="planetary-timestamp">SYNC PENDING</span>
-                        </div>
-                        <div class="planetary-grid" id="planetary-grid"></div>
-                    </div>
-                    <div class="telugu-calendar-panel hidden" id="telugu-calendar-panel" aria-label="Telugu Calendar">
-                        <div class="telugu-panel-header">
-                            <div>
-                                <p class="planetary-kicker">PANCHANGAM SYNC</p>
-                                <h2>Telugu Calendar</h2>
-                            </div>
-                            <div class="telugu-date-control">
-                                <input type="datetime-local" id="telugu-date-input" aria-label="Telugu calendar date and time">
-                                <button class="viewport-btn" id="btn-telugu-today" type="button">TODAY</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Global Location & Geolocation Control -->
-                        <div class="telugu-location-deck">
-                            <div class="location-search-row">
-                                <div class="search-input-wrapper">
-                                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                                    <input type="text" id="location-search-input" placeholder="Search global city (e.g. Hyderabad, London, Dallas)..." autocomplete="off" aria-label="Search city name">
-                                    <button class="clear-btn hidden" id="btn-clear-search" type="button" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
-                                    <div class="autocomplete-dropdown-panel hidden" id="location-autocomplete-list"></div>
-                                </div>
-                                <button class="viewport-btn gps-btn" id="btn-gps-location" type="button" title="Use current GPS coordinates">
-                                    <i class="fa-solid fa-location-crosshairs"></i> GPS
-                                </button>
-                            </div>
-                            <div class="location-badges-row">
-                                <div class="badge-group">
-                                    <span class="badge-title"><i class="fa-solid fa-clock-rotate-left"></i> RECENTS:</span>
-                                    <div class="badge-list" id="recents-list">
-                                        <span class="no-badges">None</span>
-                                    </div>
-                                </div>
-                                <div class="badge-group">
-                                    <span class="badge-title"><i class="fa-solid fa-star"></i> FAVORITES:</span>
-                                    <div class="badge-list" id="favorites-list">
-                                        <span class="no-badges">None</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="telugu-summary">
-                            <div class="telugu-primary-card">
-                                <span class="telugu-label">TELUGU DATE</span>
-                                <strong id="telugu-date-title">SYNC PENDING</strong>
-                                <div class="location-subtitle-wrapper">
-                                    <p id="telugu-date-subtitle">Hyderabad / IST</p>
-                                    <button class="favorite-toggle-btn" id="btn-toggle-favorite" type="button" title="Toggle Favorite">
-                                        <i class="fa-regular fa-star" id="favorite-star-icon"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="telugu-primary-card">
-                                <span class="telugu-label">TITHI</span>
-                                <strong id="telugu-tithi-title">SYNC PENDING</strong>
-                                <p id="telugu-tithi-end">Ends: --</p>
-                            </div>
-                        </div>
-                        <div class="telugu-grid" id="telugu-grid"></div>
+                <!-- Location Badges -->
+                <div class="sidebar-section location-badges-section">
+                    <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Recents</h3>
+                    <div class="badge-list" id="recents-list">
+                        <span class="no-badges">None</span>
                     </div>
-                    <!-- Sleek custom overlay loading state -->
-                    <div class="iframe-loader" id="iframe-loader">
-                        <div class="loader-spinner"></div>
-                        <div class="loader-text">ESTABLISHING LINK TO NASA DATA CENTER...</div>
+                    
+                    <h3 class="section-title" style="margin-top: 12px;"><i class="fa-solid fa-star"></i> Favorites</h3>
+                    <div class="badge-list" id="favorites-list">
+                        <span class="no-badges">None</span>
                     </div>
+                </div>
+
+                <!-- Calendar Layers checkboxes -->
+                <div class="sidebar-section layers-section">
+                    <h3 class="section-title"><i class="fa-solid fa-layer-group"></i> Calendar Layers</h3>
+                    <div class="layer-checkbox-list">
+                        <label class="layer-checkbox-item">
+                            <input type="checkbox" id="layer-festivals" checked>
+                            <span class="checkbox-custom"></span>
+                            <span class="layer-label festivals"><i class="fa-solid fa-cake-candles"></i> Festivals (పండుగలు)</span>
+                        </label>
+                        <label class="layer-checkbox-item">
+                            <input type="checkbox" id="layer-muhurthams" checked>
+                            <span class="checkbox-custom"></span>
+                            <span class="layer-label muhurthams"><i class="fa-solid fa-clock"></i> Muhurthams (అభిజిత్, రాహుకాలం)</span>
+                        </label>
+                        <label class="layer-checkbox-item">
+                            <input type="checkbox" id="layer-inauspicious" checked>
+                            <span class="checkbox-custom"></span>
+                            <span class="layer-label inauspicious"><i class="fa-solid fa-triangle-exclamation"></i> Inauspicious (వర్జ్యం, దుర్మ..)</span>
+                        </label>
+                        <label class="layer-checkbox-item">
+                            <input type="checkbox" id="layer-grahas" checked>
+                            <span class="checkbox-custom"></span>
+                            <span class="layer-label grahas"><i class="fa-solid fa-chart-pie"></i> Graha Rasi Chart (గ్రహచార్ట్)</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Calendar View -->
+            <section class="calendar-main" aria-label="Calendar Grid View">
+                <!-- Main dynamic grid container where Month, Week, or Day is rendered -->
+                <div id="main-calendar-view" class="calendar-view-container">
+                    <!-- Rendered by JS -->
                 </div>
             </section>
         </main>
-
-        <!-- Footer: Control deck for Sound/Info/Credit -->
-        <footer class="dashboard-footer" id="main-footer">
-            <div class="footer-left">
-                <span class="security-level">ACCESS LEVEL: UNRESTRICTED</span>
-            </div>
-            <div class="footer-center">
-                <!-- Sound Toggles -->
-                <div class="footer-control-group">
-                    <button class="footer-control-btn" id="btn-ambient-audio">
-                        <i class="fa-solid fa-volume-xmark" id="audio-icon"></i> AMBIENT HUM
-                    </button>
-                    <button class="footer-control-btn" id="btn-sound-effects">
-                        <i class="fa-solid fa-volume-high"></i> SFX: ON
-                    </button>
-                </div>
-            </div>
-            <div class="footer-right">
-                <span class="nasa-attribution">Powered by NASA Jet Propulsion Laboratory</span>
-            </div>
-        </footer>
     </div>
 
+    <!-- Event Detail Popup Modal -->
+    <div class="event-modal-overlay hidden" id="event-modal">
+        <div class="event-modal-content">
+            <div class="event-modal-header">
+                <h2 id="modal-title">Festival or Panchangam Day Details</h2>
+                <button id="btn-close-modal" class="modal-close-btn" title="Close Modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="event-modal-body" id="modal-body">
+                <!-- Content injected dynamically -->
+            </div>
+            <div class="event-modal-footer">
+                <button id="btn-modal-ok" class="modal-ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline Falling back toast notification -->
+    <div class="offline-toast hidden" id="offline-toast">
+        <i class="fa-solid fa-wifi-slash"></i> Offline mode active: Using client approximations.
+    </div>
+
+    <!-- JS dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
     <script type="module" src="src/main.js"></script>
 </body>

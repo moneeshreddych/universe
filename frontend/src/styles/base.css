@@ -11,53 +11,60 @@ body {
 
 body {
   background-color: var(--color-bg);
-  color: var(--color-text-bright);
-  cursor: var(--cursor-default);
+  color: var(--color-text-primary);
   font-family: var(--font-body);
   font-size: 14px;
   height: 100vh;
   overflow: hidden;
   position: relative;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
-a,
-button,
-[role='button'],
-.drawer-links a,
-.footer-control-btn,
-.hamburger-btn,
-.viewport-btn,
-.telugu-date-control input {
-  cursor: var(--cursor-pointer);
+a {
+  color: var(--color-primary);
+  text-decoration: none;
 }
 
 button,
-input {
-  font: inherit;
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
 }
 
 button {
-  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+input {
+  background: none;
+  border: 1px solid var(--color-border);
+  outline: none;
 }
 
 .hidden {
   display: none !important;
 }
 
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  height: 5px;
-  width: 5px;
+  height: 6px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-panel-border);
-  border-radius: 3px;
+  background: var(--color-border);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+  background: var(--color-text-light);
 }
