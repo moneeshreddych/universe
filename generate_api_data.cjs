@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 // Read source files
-const starsContent = fs.readFileSync(path.join(__dirname, 'stars_data.js'), 'utf8');
-const raasiContent = fs.readFileSync(path.join(__dirname, 'raasi_data.js'), 'utf8');
-const calendarContent = fs.readFileSync(path.join(__dirname, 'calendar.js'), 'utf8');
+const starsContent = fs.readFileSync(path.join(__dirname, 'frontend', 'stars_data.js'), 'utf8');
+const raasiContent = fs.readFileSync(path.join(__dirname, 'frontend', 'raasi_data.js'), 'utf8');
+const calendarContent = fs.readFileSync(path.join(__dirname, 'frontend', 'calendar.js'), 'utf8');
 
 // Combine contents to execute in node context
 const code = `
@@ -16,14 +16,14 @@ module.exports = { getTeluguDetailsForDate, TELUGU_MONTH_RANGES, FESTIVALS_2026 
 `;
 
 // Write temporary file
-const tempFilePath = path.join(__dirname, 'temp_combined_calendar.js');
+const tempFilePath = path.join(__dirname, 'temp_combined_calendar.cjs');
 fs.writeFileSync(tempFilePath, code, 'utf8');
 
 // Require the combined file to run calculations
 const { getTeluguDetailsForDate } = require(tempFilePath);
 
 // Create directory structures
-const publicApiDir = path.join(__dirname, 'public', 'api');
+const publicApiDir = path.join(__dirname, 'frontend', 'public', 'api');
 const datesDir = path.join(publicApiDir, 'dates');
 
 if (!fs.existsSync(publicApiDir)) {
@@ -65,5 +65,5 @@ fs.writeFileSync(
 fs.unlinkSync(tempFilePath);
 
 console.log('API endpoints successfully generated!');
-console.log(' - Combined Year: public/api/calendar_2026.json');
-console.log(' - Individual Dates: public/api/dates/2026-MM-DD.json (365 files)');
+console.log(' - Combined Year: frontend/public/api/calendar_2026.json');
+console.log(' - Individual Dates: frontend/public/api/dates/2026-MM-DD.json (365 files)');

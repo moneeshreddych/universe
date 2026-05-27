@@ -1,12 +1,21 @@
 {
-  "name": "astralverse",
+  "name": "universe",
   "version": "1.0.0",
-  "description": "AstralVerse - Solar System Portal and Telugu Google-styled Calendar",
-  "main": "index.html",
+  "description": "AstralVerse - Telugu Panchangam, Hindu Astronomy API & Solar System Portal",
+  "type": "module",
+  "main": "backend/src/app.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "node backend/src/app.js",
+    "dev": "node --watch backend/src/app.js",
+    "regenerate-api": "node generate_api_data.cjs"
+  },
+  "dependencies": {
+    "astronomy-engine": "^2.1.19",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
     "vite": "^5.2.0"
