@@ -6,13 +6,13 @@ This website now hosts a static JSON API for the Telugu Calendar (Parabhava Samv
 
 ### 1. Full Year 2026 Calendar Endpoint
 Retrieve the complete calendar dataset for all 365 days of 2026.
-* **Local Link:** `http://localhost:5173/api/calendar_2026.json`
-* **Production Link:** `https://<your-website-domain>/api/calendar_2026.json`
+* **Local Link:** `http://localhost:5173/public/api/calendar_2026.json`
+* **Production Link:** `https://moneeshreddych.github.io/universe/public/api/calendar_2026.json`
 
 ### 2. Day-by-Day Endpoint
 Retrieve the Panchangam, Rasi, Nakshatram, and festival details for a specific date (formatted as `YYYY-MM-DD`).
-* **Local Link:** `http://localhost:5173/api/dates/2026-03-19.json` (example for Ugadi)
-* **Production Link:** `https://<your-website-domain>/api/dates/2026-03-19.json`
+* **Local Link:** `http://localhost:5173/public/api/dates/2026-03-19.json` (example for Ugadi)
+* **Production Link:** `https://moneeshreddych.github.io/universe/public/api/dates/2026-03-19.json`
 
 ---
 
@@ -54,7 +54,7 @@ Retrieve the Panchangam, Rasi, Nakshatram, and festival details for a specific d
 async function fetchPanchangam(dateString) {
   // dateString format: "2026-03-19"
   try {
-    const response = await fetch(`http://localhost:5173/api/dates/${dateString}.json`);
+    const response = await fetch(`http://localhost:5173/public/api/dates/${dateString}.json`);
     const data = await response.json();
     console.log("Panchangam details:", data);
     return data;
@@ -70,7 +70,7 @@ import 'dart:convert';
 import 'http/http.dart' as http;
 
 Future<Map<String, dynamic>?> fetchPanchangam(String dateString) async {
-  final url = Uri.parse('http://localhost:5173/api/dates/$dateString.json');
+  final url = Uri.parse('http://localhost:5173/public/api/dates/$dateString.json');
   try {
     final response = await http.get(url);
     if (response.statusCode == 200) {
