@@ -1,0 +1,25 @@
+{
+  "teluguYear": "పరాభవ (Parabhava)",
+  "teluguMonth": "మార్గశిరము",
+  "teluguMonthEn": "Margashiramu",
+  "pakshamTe": "శుక్ల పక్షము",
+  "pakshamEn": "Shukla Paksham",
+  "tithiNameTe": "నవమి",
+  "tithiNameEn": "Navami",
+  "tithiShortTe": "శు. నవమి",
+  "tithiEndTime": "04:12 PM",
+  "nakshatraNameTe": "కృత్తిక",
+  "nakshatraNameEn": "Krittika",
+  "nakshatraEndTime": "02:30 PM",
+  "rashiTe": "మేషం (Aries)",
+  "rashiEn": "Mesha",
+  "festival": {
+    "nameTe": "గీతా జయంతి",
+    "nameEn": "Gita Jayanti",
+    "color": "bg-emerald-600/20 text-emerald-300 border-emerald-500/50"
+  },
+  "rahuKalam": "10:30 AM - 12:00 PM",
+  "durmuhurtham": "08:15 AM - 09:03 AM & 12:30 PM - 01:18 PM",
+  "yamagandam": "03:00 PM - 04:30 PM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}

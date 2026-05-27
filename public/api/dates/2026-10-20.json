@@ -1,0 +1,25 @@
+{
+  "teluguYear": "పరాభవ (Parabhava)",
+  "teluguMonth": "ఆశ్వయుజము",
+  "teluguMonthEn": "Ashvayujamu",
+  "pakshamTe": "శుక్ల పక్షము",
+  "pakshamEn": "Shukla Paksham",
+  "tithiNameTe": "నవమి",
+  "tithiNameEn": "Navami",
+  "tithiShortTe": "శు. నవమి",
+  "tithiEndTime": "04:12 PM",
+  "nakshatraNameTe": "పూర్వాభాద్ర",
+  "nakshatraNameEn": "Purva Bhadrapada",
+  "nakshatraEndTime": "02:30 PM",
+  "rashiTe": "కుంభం (Aquarius)",
+  "rashiEn": "Kumbha",
+  "festival": {
+    "nameTe": "విజయదశమి / దసరా",
+    "nameEn": "Vijayadashami / Dussehra",
+    "color": "bg-red-600/20 text-red-300 border-red-500/50"
+  },
+  "rahuKalam": "03:00 PM - 04:30 PM",
+  "durmuhurtham": "08:15 AM - 09:03 AM & 10:48 PM - 11:36 PM",
+  "yamagandam": "09:00 AM - 10:30 AM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}

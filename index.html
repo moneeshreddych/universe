@@ -1,197 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telugu Panchangam Calendar - Traditional Astro Calendar</title>
-    <meta name="description" content="A production-grade Telugu Panchangam Calendar Web App resembling Google Calendar, calculating Tithis, Nakshatrams, Muhurthams, and Graha positions dynamically.">
-    <link rel="icon" href="public/favicon.ico">
-    
-    <!-- Google Fonts: Orbitron for cosmic text, Inter for clean layout -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for UI icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="styles.css?v=modular">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AstralVerse: A premium interactive Vedic astrology and real-time NASA solar system simulator featuring the 27 Nakshatras, 12 Rasis, and a comprehensive Google Calendar-styled Telugu Calendar.">
+  <title>AstralVerse - Telugu Panchangam & Solar System Portal</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Starry Canvas Background (shown in Cosmic theme) -->
-    <div class="stars-container" id="stars-container">
-        <canvas id="starfield-canvas"></canvas>
-        <div class="nebula-overlay"></div>
+
+  <!-- Twinkling Stars Cosmic Background -->
+  <div class="stars-overlay" id="stars-overlay"></div>
+
+  <!-- Decorative Nebulas -->
+  <div class="cosmic-glow-1"></div>
+  <div class="cosmic-glow-2"></div>
+
+  <!-- Floating Header / Navigation -->
+  <header class="app-header">
+    <div class="logo">
+      ASTRALVERSE
+      <span class="logo-sub">నక్షత్ర గ్రహ వేదిక</span>
     </div>
+    
+    <!-- Hamburger button to open Telugu Calendar Sidebar -->
+    <button class="hamburger-btn" id="hamburger-menu" aria-label="Toggle Menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
 
-    <!-- Scanline effect for Cosmic Monitor theme -->
-    <div class="scanlines" id="scanlines-overlay"></div>
+  <!-- Main Webpage Content -->
+  <main class="main-content">
 
-    <!-- Main Google Calendar-style Grid -->
-    <div class="dashboard-wrapper">
-        <!-- Top Google-Style Header -->
-        <header class="dashboard-header">
-            <div class="header-left flex-align-center">
-                <button id="btn-sidebar-toggle" class="sidebar-toggle-btn" title="Toggle Sidebar">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="logo-circle"><i class="fa-solid fa-sun-plant-wilt"></i></div>
-                <div class="title-group">
-                    <h1>తెలుగు పంచాంగం</h1>
-                    <p class="subtitle">TELUGU PANCHANGAM</p>
-                </div>
+    <!-- HERO SECTION: NASA Eyes Solar System Simulator -->
+    <section class="simulator-section mb-16 reveal">
+      <div class="section-title-wrap text-center">
+        <span class="section-subtitle">Real-Time Cosmic positions</span>
+        <h2 class="section-title">NASA Eyes Solar System Simulator</h2>
+      </div>
+
+      <div class="glass glow-cyan simulator-card" id="simulator-container">
+        <!-- Scroll intercept overlay -->
+        <div class="simulator-overlay" id="simulator-scroll-lock">
+          <p class="text-sm text-slate-300 mb-3 text-center px-4">Scroll locked to prevent page navigation conflicts.</p>
+          <button class="overlay-btn" id="unlock-simulator-btn">Click to Interact</button>
+        </div>
+
+        <div class="lock-indicator hidden" id="lock-status-indicator">
+          <span>🎮 Interactive Mode Active</span>
+          <button class="cal-btn px-2 py-0.5 text-[10px]" id="lock-simulator-btn">Lock Scroll</button>
+        </div>
+
+        <iframe 
+          id="nasa-eyes-iframe"
+          class="simulator-frame" 
+          src="https://eyes.nasa.gov/apps/solar-system/?embed=true" 
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- SECTION 2: 9 Planets & Moon Slideshow Carousel -->
+    <section class="slideshow-section reveal" id="planets-slideshow">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">గ్రహ సంచారం</span>
+        <h2 class="section-title">9 Planets & The Moon</h2>
+      </div>
+
+      <div class="slider-container">
+        <!-- Navigation Buttons -->
+        <button class="slider-btn" id="prev-slide" aria-label="Previous Slide">←</button>
+
+        <div class="slider-viewport">
+          <div class="slider-track" id="slider-track">
+            <!-- Dynamic Slides will be injected here by app.js -->
+          </div>
+        </div>
+
+        <button class="slider-btn" id="next-slide" aria-label="Next Slide">→</button>
+      </div>
+
+      <div class="slider-dots" id="slider-dots">
+        <!-- Dynamic dot controls injected here -->
+      </div>
+    </section>
+
+    <!-- SECTION 3: 27 Nakshatras Explorer -->
+    <section class="stars-section reveal" id="nakshatras-section">
+      <div class="section-title-wrap flex justify-between items-end flex-wrap gap-4">
+        <div>
+          <span class="section-subtitle">నక్షత్ర వీధి</span>
+          <h2 class="section-title">27 Nakshatras (Stars)</h2>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="search-filter-bar glass p-4 mb-6">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="nakshatra-search" 
+            class="search-input" 
+            placeholder="Search Nakshatra (e.g. Rohini, Ashwini, Ketu)..."
+          >
+        </div>
+        <div class="text-xs text-slate-400 font-medium">
+          Click any card to flip and view Vedic characteristics, ruling deities, and symbols.
+        </div>
+      </div>
+
+      <!-- Grid container for Stars -->
+      <div class="stars-grid" id="stars-grid">
+        <!-- 27 Cards injected by app.js -->
+      </div>
+    </section>
+
+    <!-- SECTION 4: 12 Zodiac Rasis -->
+    <section class="rasi-section reveal" id="rasis-section">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">ద్వాదశ రాశులు</span>
+        <h2 class="section-title">12 Zodiac Rasis</h2>
+      </div>
+
+      <!-- Grid container for Rasis -->
+      <div class="rasi-grid" id="rasis-grid">
+        <!-- 12 Cards injected by app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MENU SIDEBAR: Navigation Menu Drawer -->
+  <aside class="menu-sidebar" id="menu-sidebar">
+    <div class="menu-sidebar-content glass glow-cyan">
+      <button class="close-menu-btn" id="close-menu-sidebar" aria-label="Close Menu">✕</button>
+      
+      <div class="menu-logo">
+        ASTRALVERSE
+        <span class="menu-logo-sub">నక్షత్ర గ్రహ వేదిక</span>
+      </div>
+      
+      <nav class="menu-links-deck">
+        <a href="#simulator-container" class="menu-link-item">
+          <span class="menu-link-icon">🎮</span> Real-Time Simulator
+        </a>
+        <a href="#planets-slideshow" class="menu-link-item">
+          <span class="menu-link-icon">🪐</span> 9 Planets & Moon
+        </a>
+        <a href="#nakshatras-section" class="menu-link-item">
+          <span class="menu-link-icon">✨</span> 27 Nakshatras (Stars)
+        </a>
+        <a href="#rasis-section" class="menu-link-item">
+          <span class="menu-link-icon">♈</span> 12 Zodiac Rasis
+        </a>
+        
+        <div class="menu-divider"></div>
+        
+        <button class="menu-calendar-btn" id="open-calendar-from-menu">
+          <span class="menu-btn-icon">📅</span> Telugu Calendar app
+        </button>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- SIDEBAR DRAWER: Redesigned traditional cream-gold Telugu Calendar Dashboard -->
+  <aside class="sidebar-drawer" id="calendar-drawer">
+    <div class="panchangam-app-container">
+      
+      <!-- CENTER PANEL: Displays the selected active view content -->
+      <main class="panchangam-center-panel">
+        
+        <!-- VIEW A: MONTHLY VIEW PANEL -->
+        <div class="view-panel active" id="view-panel-monthly">
+          <!-- Calendar Month Navigation Header (Google Calendar Style) -->
+          <div class="calendar-month-selector">
+            <div class="month-selector-left">
+              <button class="cal-today-btn" id="cal-today">Today</button>
+              <div class="month-nav-buttons">
+                <button class="month-nav-btn" id="cal-prev-month" aria-label="Previous Month">‹</button>
+                <button class="month-nav-btn" id="cal-next-month" aria-label="Next Month">›</button>
+              </div>
+              <div class="month-title-wrap">
+                <div class="month-year-badge" id="sidebar-year-title">Sri Parabhava Nama</div>
+                <h2 class="month-telugu-name font-telugu" id="month-title-te">వైశాఖ మాసం</h2>
+                <span class="month-english-name" id="month-title-en">(Vaisakha Masam)</span>
+              </div>
             </div>
             
-            <!-- Center: Search Location with Autocomplete -->
-            <div class="header-center flex-align-center">
-                <div class="location-search-bar">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="location-search-input" placeholder="Search global city (e.g. Hyderabad, London, Dallas)..." autocomplete="off" aria-label="Search city name">
-                    <button class="clear-btn hidden" id="btn-clear-search" type="button" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
-                    <button class="gps-btn" id="btn-gps-location" type="button" title="Use current GPS coordinates">
-                        <i class="fa-solid fa-location-crosshairs"></i> GPS
-                    </button>
-                    <div class="autocomplete-dropdown-panel hidden" id="location-autocomplete-list"></div>
-                </div>
+            <div class="month-info-badges">
+              <span class="month-badge text-xs" id="month-gregorian-badge">MAY 2026</span>
+              <span class="month-badge text-xs" id="month-ayana-badge">UTTARAYANAM</span>
+              <button class="cal-close-btn" id="close-drawer-desktop" aria-label="Close Calendar">✕</button>
             </div>
+          </div>
 
-            <!-- Right: View Selector, Themes & Audio Control -->
-            <div class="header-right flex-align-center">
-                <!-- Today & Navigation -->
-                <div class="calendar-nav-controls flex-align-center">
-                    <button id="btn-today" class="nav-btn today-btn">Today</button>
-                    <button id="btn-prev" class="nav-btn icon-btn" title="Previous"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button id="btn-next" class="nav-btn icon-btn" title="Next"><i class="fa-solid fa-chevron-right"></i></button>
-                    <span id="label-current-range" class="current-range-label">Syncing...</span>
-                </div>
-
-                <!-- View Switcher -->
-                <div class="view-selector-wrapper">
-                    <select id="select-view" class="view-dropdown" aria-label="Select calendar view">
-                        <option value="month">Month</option>
-                        <option value="week">Week</option>
-                        <option value="day">Day</option>
-                    </select>
-                </div>
-
-                <!-- Audio control buttons -->
-                <div class="audio-control-group flex-align-center">
-                    <button class="header-icon-btn" id="btn-ambient-audio" title="Ambient Sound Toggle">
-                        <i class="fa-solid fa-volume-xmark" id="audio-icon"></i>
-                    </button>
-                    <button class="header-icon-btn" id="btn-sound-effects" title="SFX Toggle">
-                        <i class="fa-solid fa-volume-high" id="sfx-icon"></i>
-                    </button>
-                </div>
-
-                <!-- Theme Toggle Button -->
-                <button id="btn-theme-toggle" class="header-icon-btn theme-toggle-btn" title="Switch Theme (Light / Dark / Cosmic)">
-                    <i class="fa-solid fa-circle-half-stroke"></i>
-                </button>
+          <!-- Calendar Grid Container -->
+          <div class="panchangam-grid-container">
+            <!-- Days of Week Header -->
+            <div class="panchangam-weekdays-grid">
+              <div>ఆది</div>
+              <div>సోమ</div>
+              <div>మంగళ</div>
+              <div>బుధ</div>
+              <div>గురు</div>
+              <div>శుక్ర</div>
+              <div>శని</div>
             </div>
-        </header>
-
-        <!-- Body content: Split into sidebar and central views -->
-        <main class="dashboard-body">
-            <!-- Left Sidebar -->
-            <aside class="calendar-sidebar" id="calendar-sidebar" aria-label="Sidebar Calendar Controls">
-                <!-- Sidebar Mini Calendar Container -->
-                <div class="sidebar-section mini-calendar-section">
-                    <div id="mini-calendar" class="mini-calendar-wrapper">
-                        <!-- Rendered by JS -->
-                    </div>
-                </div>
-
-                <!-- Active Location display & Favorites Toggle -->
-                <div class="sidebar-section location-info-section">
-                    <h3 class="section-title"><i class="fa-solid fa-map-location-dot"></i> Selected Location</h3>
-                    <div class="active-location-card">
-                        <div class="location-details">
-                            <strong id="active-location-name">Hyderabad</strong>
-                            <span id="active-location-tz">Asia/Kolkata</span>
-                        </div>
-                        <button class="favorite-toggle-btn" id="btn-toggle-favorite" title="Add to Favorites">
-                            <i class="fa-regular fa-star" id="favorite-star-icon"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Location Badges -->
-                <div class="sidebar-section location-badges-section">
-                    <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Recents</h3>
-                    <div class="badge-list" id="recents-list">
-                        <span class="no-badges">None</span>
-                    </div>
-                    
-                    <h3 class="section-title" style="margin-top: 12px;"><i class="fa-solid fa-star"></i> Favorites</h3>
-                    <div class="badge-list" id="favorites-list">
-                        <span class="no-badges">None</span>
-                    </div>
-                </div>
-
-                <!-- Calendar Layers checkboxes -->
-                <div class="sidebar-section layers-section">
-                    <h3 class="section-title"><i class="fa-solid fa-layer-group"></i> Calendar Layers</h3>
-                    <div class="layer-checkbox-list">
-                        <label class="layer-checkbox-item">
-                            <input type="checkbox" id="layer-festivals" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="layer-label festivals"><i class="fa-solid fa-cake-candles"></i> Festivals (పండుగలు)</span>
-                        </label>
-                        <label class="layer-checkbox-item">
-                            <input type="checkbox" id="layer-muhurthams" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="layer-label muhurthams"><i class="fa-solid fa-clock"></i> Muhurthams (అభిజిత్, రాహుకాలం)</span>
-                        </label>
-                        <label class="layer-checkbox-item">
-                            <input type="checkbox" id="layer-inauspicious" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="layer-label inauspicious"><i class="fa-solid fa-triangle-exclamation"></i> Inauspicious (వర్జ్యం, దుర్మ..)</span>
-                        </label>
-                        <label class="layer-checkbox-item">
-                            <input type="checkbox" id="layer-grahas" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="layer-label grahas"><i class="fa-solid fa-chart-pie"></i> Graha Rasi Chart (గ్రహచార్ట్)</span>
-                        </label>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Main Calendar View -->
-            <section class="calendar-main" aria-label="Calendar Grid View">
-                <!-- Main dynamic grid container where Month, Week, or Day is rendered -->
-                <div id="main-calendar-view" class="calendar-view-container">
-                    <!-- Rendered by JS -->
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Event Detail Popup Modal -->
-    <div class="event-modal-overlay hidden" id="event-modal">
-        <div class="event-modal-content">
-            <div class="event-modal-header">
-                <h2 id="modal-title">Festival or Panchangam Day Details</h2>
-                <button id="btn-close-modal" class="modal-close-btn" title="Close Modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+            <!-- Calendar Cells -->
+            <div class="panchangam-dates-grid" id="main-calendar-grid">
+              <!-- Dynamically rendered cells -->
             </div>
-            <div class="event-modal-body" id="modal-body">
-                <!-- Content injected dynamically -->
-            </div>
-            <div class="event-modal-footer">
-                <button id="btn-modal-ok" class="modal-ok-btn">OK</button>
-            </div>
+          </div>
         </div>
-    </div>
 
-    <!-- Offline Falling back toast notification -->
-    <div class="offline-toast hidden" id="offline-toast">
-        <i class="fa-solid fa-wifi-slash"></i> Offline mode active: Using client approximations.
-    </div>
+        <!-- VIEW B: DAILY PANCHANGAM PANEL -->
+        <div class="view-panel" id="view-panel-daily">
+          <div class="daily-panchangam-header">
+            <div class="daily-panch-accent">✨ TODAY'S PANCHANGAM</div>
+            <h2 class="daily-panch-year font-telugu" id="daily-year-te">శ్రీ పరాభవ నామ సంవత్సరము</h2>
+            <p class="daily-panch-date" id="daily-date-en">May 15, 2026 | Wednesday | బుధవారము</p>
+          </div>
 
-    <!-- JS dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
-    <script type="module" src="src/main.js"></script>
+          <div class="daily-panchangam-grid">
+            <!-- Core Panchangam Cards -->
+            <div class="daily-card animate-fade">
+              <span class="card-label">TITHI</span>
+              <h3 class="card-value font-telugu" id="daily-tithi-val">శుక్ల పక్ష ఏకాదశి</h3>
+              <p class="card-sub" id="daily-tithi-sub">ముగింపు: 04:30 PM</p>
+              <span class="card-badge bg-orange-500 text-white">CURRENT</span>
+            </div>
+
+            <div class="daily-card animate-fade">
+              <span class="card-label">NAKSHATRAM</span>
+              <h3 class="card-value font-telugu" id="daily-nak-val">పూర్వాషాఢ</h3>
+              <p class="card-sub" id="daily-nak-sub">ముగింపు: 02:15 PM</p>
+            </div>
+
+            <div class="daily-card dark-maroon-card animate-fade">
+              <span class="card-label text-amber-300">CURRENT MOON SIGN</span>
+              <h3 class="card-value text-white font-telugu" id="daily-rasi-val">సింహ రాశి (Leo)</h3>
+              <p class="card-sub text-slate-300">Moon transit sign</p>
+            </div>
+
+            <!-- Sun & Moon Card -->
+            <div class="daily-card full-width-card animate-fade">
+              <h4 class="card-inner-title">Sun & Moon</h4>
+              <div class="sun-moon-grid">
+                <div class="sun-moon-item">
+                  <span class="sm-label">☀️ SUNRISE</span>
+                  <span class="sm-value" id="daily-sunrise-val">05:48 AM</span>
+                </div>
+                <div class="sun-moon-item">
+                  <span class="sm-label">☀️ SUNSET</span>
+                  <span class="sm-value" id="daily-sunset-val">06:34 PM</span>
+                </div>
+                <div class="sun-moon-item">
+                  <span class="sm-label">🌙 MOONRISE</span>
+                  <span class="sm-value" id="daily-moonrise-val">02:22 PM</span>
+                </div>
+                <div class="sun-moon-item">
+                  <span class="sm-label">🌙 MOONSET</span>
+                  <span class="sm-value" id="daily-moonset-val">03:10 AM</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Auspicious Times Card -->
+            <div class="daily-card full-width-card animate-fade">
+              <h4 class="card-inner-title">🌟 Auspicious Times</h4>
+              <div class="timings-list">
+                <div class="timing-item border-b">
+                  <div>
+                    <span class="timing-title font-semibold text-emerald-800">Abhijit Muhurtham</span>
+                    <p class="text-[10px] text-slate-500">Best for new beginnings</p>
+                  </div>
+                  <span class="timing-val text-slate-800 font-bold" id="daily-abhijit-val">11:45 AM - 12:35 PM</span>
+                </div>
+                <div class="timing-item">
+                  <div>
+                    <span class="timing-title font-semibold text-emerald-800">Amrita Kalam</span>
+                    <p class="text-[10px] text-slate-500">Sacred nectar period</p>
+                  </div>
+                  <span class="timing-val text-slate-800 font-bold" id="daily-amrita-val">08:12 PM - 09:44 PM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW C: FESTIVALS LIST PANEL -->
+        <div class="view-panel" id="view-panel-festivals">
+          <div class="daily-panchangam-header">
+            <div class="daily-panch-accent">🎉 2026 FESTIVALS</div>
+            <h2 class="daily-panch-year font-telugu">ప్రధాన పండుగలు & శెలవులు</h2>
+            <p class="daily-panch-date">List of major Telugu festivals for Parabhava Samvatsaram</p>
+          </div>
+          <div class="festivals-list-container animate-fade" id="festivals-list-view">
+            <!-- Dynamic list of festivals injected here -->
+          </div>
+        </div>
+
+        <!-- VIEW D: AUSPICIOUS MUHURTHAM PANEL -->
+        <div class="view-panel" id="view-panel-muhurtham">
+          <div class="daily-panchangam-header">
+            <div class="daily-panch-accent">✨ AUSPICIOUS MUHURTHAMS</div>
+            <h2 class="daily-panch-year font-telugu">శుభ ముహూర్తాలు</h2>
+            <p class="daily-panch-date">Auspicious timings for marriages, housewarming, and business startup</p>
+          </div>
+          <div class="muhurtham-container animate-fade">
+            <div class="muhurthams-list" id="muhurthams-list-view">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- 3. RIGHT SIDEBAR WIDGETS PANEL -->
+      <aside class="panchangam-widgets">
+        
+        <!-- WIDGET 1: TODAY'S QUICK PANCHANGAM (Maroon Card) -->
+        <div class="widget-card quick-panchangam-card">
+          <div class="quick-panch-header">
+            <span class="quick-panch-subtitle">TODAY'S QUICK PANCHANGAM</span>
+            <h3 class="quick-panch-title" id="widget-date-greg">May 03, 2026</h3>
+          </div>
+          <div class="quick-panch-body">
+            <div class="quick-panch-row">
+              <span class="quick-label">🌕 Tithi</span>
+              <span class="quick-val font-telugu" id="widget-tithi-val">తదియ (Thadiya)</span>
+            </div>
+            <div class="quick-panch-row">
+              <span class="quick-label">⭐ Nakshatram</span>
+              <span class="quick-val font-telugu" id="widget-nak-val">విశాఖ (Vishakha)</span>
+            </div>
+            <div class="quick-panch-row">
+              <span class="quick-label">♉ Rasi</span>
+              <span class="quick-val font-telugu" id="widget-rasi-val">వృశ్చికం (Scorpio)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WIDGET 2: AUSPICIOUS TIMINGS -->
+        <div class="widget-card timing-box border-gold">
+          <h4 class="widget-title text-amber-700">✔ Auspicious Timings</h4>
+          <div class="widget-timing-row">
+            <div>
+              <span class="t-label">ABHIJIT MUHURTHAM</span>
+              <span class="t-val" id="widget-abhijit-val">11:45 AM - 12:35 PM</span>
+            </div>
+            <span class="t-icon">☀️</span>
+          </div>
+          <div class="widget-timing-row mt-2">
+            <div>
+              <span class="t-label">AMRITAKALA</span>
+              <span class="t-val" id="widget-amrita-val">04:20 PM - 05:55 PM</span>
+            </div>
+            <span class="t-icon">⭐</span>
+          </div>
+        </div>
+
+        <!-- WIDGET 3: AVOID THESE TIMINGS (Inauspicious) -->
+        <div class="widget-card timing-box border-red">
+          <h4 class="widget-title text-red-700">🚫 Avoid These Timings</h4>
+          <div class="widget-avoid-row">
+            <span class="av-label">Rahukaalam</span>
+            <span class="av-val text-red-600 font-bold" id="widget-rahu-val">10:30 AM - 12:00 PM</span>
+          </div>
+          <div class="widget-avoid-row mt-1">
+            <span class="av-label">Yamagandam</span>
+            <span class="av-val text-red-600" id="widget-yama-val">03:00 PM - 04:30 PM</span>
+          </div>
+          <div class="widget-avoid-row mt-1">
+            <span class="av-label">Gulika Kaalam</span>
+            <span class="av-val text-slate-700" id="widget-gulika-val">07:30 AM - 09:00 AM</span>
+          </div>
+        </div>
+
+
+
+        <!-- WIDGET 5: DAILY VIEW EXCLUSIVE - FESTIVALS & IMPORTANT EVENTS -->
+        <div class="widget-card daily-festivals-widget hidden" id="daily-festivals-widget-card">
+          <h4 class="widget-title text-red-800 border-b pb-1.5 flex items-center gap-1.5">
+            <span>📅</span> Festivals & Important Events
+          </h4>
+          <div class="daily-festivals-content" id="daily-fest-content">
+            <!-- Dynamic festival descriptions injected here -->
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </aside>
+
+  <!-- PANCHANGAM DETAILED MODAL -->
+  <div class="panchangam-modal-overlay" id="panchangam-modal">
+    <div class="panchangam-modal-content glass glow-gold p-6 rounded-2xl">
+      <button class="close-modal-btn" id="close-panchangam-modal" aria-label="Close details">✕</button>
+      <div id="panchangam-modal-body">
+        <!-- Panchangam details will be injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p class="mb-2">© 2026 AstralVerse - Cosmic Solar System & Telugu Panchangam Portal</p>
+    <p class="text-[11px] text-slate-600">Built using official real-time NASA Eyes datasets and traditional Vedic algorithms.</p>
+  </footer>
+
+  <!-- Javascript Modules loading -->
+  <script src="stars_data.js"></script>
+  <script src="raasi_data.js"></script>
+  <script src="planets_data.js"></script>
+  <script src="calendar.js"></script>
+  <script src="app.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,25 @@
+{
+  "teluguYear": "పరాభవ (Parabhava)",
+  "teluguMonth": "వైశాఖము",
+  "teluguMonthEn": "Vaishakha",
+  "pakshamTe": "కృష్ణ పక్షము (బహుళ)",
+  "pakshamEn": "Krishna Paksham",
+  "tithiNameTe": "చతుర్దశి",
+  "tithiNameEn": "Chaturdashi",
+  "tithiShortTe": "బ. చతుర్దశి",
+  "tithiEndTime": "07:15 PM",
+  "nakshatraNameTe": "కృత్తిక",
+  "nakshatraNameEn": "Krittika",
+  "nakshatraEndTime": "08:30 PM",
+  "rashiTe": "మేషం (Aries)",
+  "rashiEn": "Mesha",
+  "festival": {
+    "nameTe": "తెలుగు హనుమాన్ జయంతి",
+    "nameEn": "Vaishakha Hanuman Jayanthi",
+    "color": "bg-red-600/20 text-red-300 border-red-500/50"
+  },
+  "rahuKalam": "09:00 AM - 10:30 AM",
+  "durmuhurtham": "08:15 AM - 09:03 AM",
+  "yamagandam": "01:30 PM - 03:00 PM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}

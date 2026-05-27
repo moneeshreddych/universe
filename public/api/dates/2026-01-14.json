@@ -1,0 +1,25 @@
+{
+  "teluguYear": "విశ్వావసు (Vishwavasu)",
+  "teluguMonth": "పుష్యము",
+  "teluguMonthEn": "Pushya",
+  "pakshamTe": "కృష్ణ పక్షము (బహుళ)",
+  "pakshamEn": "Krishna Paksham",
+  "tithiNameTe": "ఏకాదశి",
+  "tithiNameEn": "Ekadashi",
+  "tithiShortTe": "బ. ఏకాదశి",
+  "tithiEndTime": "06:45 PM",
+  "nakshatraNameTe": "విశాఖ",
+  "nakshatraNameEn": "Vishakha",
+  "nakshatraEndTime": "05:15 PM",
+  "rashiTe": "తులా (Libra)",
+  "rashiEn": "Tula",
+  "festival": {
+    "nameTe": "మకర సంక్రాంతి",
+    "nameEn": "Makara Sankranti",
+    "color": "bg-amber-600/20 text-amber-300 border-amber-500/50"
+  },
+  "rahuKalam": "12:00 PM - 01:30 PM",
+  "durmuhurtham": "11:42 AM - 12:30 PM",
+  "yamagandam": "07:30 AM - 09:00 AM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}

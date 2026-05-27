@@ -1,0 +1,25 @@
+{
+  "teluguYear": "పరాభవ (Parabhava)",
+  "teluguMonth": "శ్రావణము",
+  "teluguMonthEn": "Shravana",
+  "pakshamTe": "కృష్ణ పక్షము (బహుళ)",
+  "pakshamEn": "Krishna Paksham",
+  "tithiNameTe": "అష్టమి",
+  "tithiNameEn": "Ashtami",
+  "tithiShortTe": "బ. అష్టమి",
+  "tithiEndTime": "11:05 PM",
+  "nakshatraNameTe": "ఆరుద్ర",
+  "nakshatraNameEn": "Arudra",
+  "nakshatraEndTime": "12:15 AM",
+  "rashiTe": "మిథునం (Gemini)",
+  "rashiEn": "Mithuna",
+  "festival": {
+    "nameTe": "శ్రీకృష్ణ జన్మాష్టమి",
+    "nameEn": "Janmashtami",
+    "color": "bg-blue-600/20 text-blue-300 border-blue-500/50"
+  },
+  "rahuKalam": "10:30 AM - 12:00 PM",
+  "durmuhurtham": "08:15 AM - 09:03 AM & 12:30 PM - 01:18 PM",
+  "yamagandam": "03:00 PM - 04:30 PM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}

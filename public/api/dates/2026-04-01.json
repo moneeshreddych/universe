@@ -1,0 +1,25 @@
+{
+  "teluguYear": "పరాభవ (Parabhava)",
+  "teluguMonth": "చైత్రము",
+  "teluguMonthEn": "Chaitra",
+  "pakshamTe": "శుక్ల పక్షము",
+  "pakshamEn": "Shukla Paksham",
+  "tithiNameTe": "చతుర్దశి",
+  "tithiNameEn": "Chaturdashi",
+  "tithiShortTe": "శు. చతుర్దశి",
+  "tithiEndTime": "09:20 PM",
+  "nakshatraNameTe": "ఉత్తర (ఉత్తరఫల్గుణి)",
+  "nakshatraNameEn": "Uttara Phalguni",
+  "nakshatraEndTime": "10:10 PM",
+  "rashiTe": "సింహం (Leo)",
+  "rashiEn": "Simha",
+  "festival": {
+    "nameTe": "హనుమాన్ జయంతి (చైత్ర)",
+    "nameEn": "Hanuman Jayanthi (Chaitra)",
+    "color": "bg-red-600/20 text-red-300 border-red-500/50"
+  },
+  "rahuKalam": "12:00 PM - 01:30 PM",
+  "durmuhurtham": "11:42 AM - 12:30 PM",
+  "yamagandam": "07:30 AM - 09:00 AM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}

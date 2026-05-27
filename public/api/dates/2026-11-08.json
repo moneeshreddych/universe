@@ -1,0 +1,25 @@
+{
+  "teluguYear": "పరాభవ (Parabhava)",
+  "teluguMonth": "ఆశ్వయుజము",
+  "teluguMonthEn": "Ashvayujamu",
+  "pakshamTe": "కృష్ణ పక్షము (బహుళ)",
+  "pakshamEn": "Krishna Paksham",
+  "tithiNameTe": "త్రయోదశి",
+  "tithiNameEn": "Trayodashi",
+  "tithiShortTe": "బ. త్రయోదశి",
+  "tithiEndTime": "05:30 PM",
+  "nakshatraNameTe": "అనూరాధ",
+  "nakshatraNameEn": "Anuradha",
+  "nakshatraEndTime": "06:10 PM",
+  "rashiTe": "వృశ్చికం (Scorpio)",
+  "rashiEn": "Vrishchika",
+  "festival": {
+    "nameTe": "దీపావళి పండుగ",
+    "nameEn": "Deepavali / Diwali",
+    "color": "bg-amber-600/20 text-amber-300 border-amber-500/50"
+  },
+  "rahuKalam": "04:30 PM - 06:00 PM",
+  "durmuhurtham": "04:20 PM - 05:08 PM",
+  "yamagandam": "12:00 PM - 01:30 PM",
+  "abhijit": "11:50 AM - 12:40 PM"
+}
